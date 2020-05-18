@@ -1,0 +1,32 @@
+
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Barclays EPL Knowledge base</title>
+      {% else %}
+      <title>Welcome to Barclays EPL knowledge base</title>
+      {% endif %}
+    </head>
+    <body style ="background-color:rgb(223, 180, 180);">
+        
+        <div>
+          Barclays_EPL:
+          <a href="/index">Home</a>
+          <a href="{{ url_for('login') }}">Login</a>
+          <a href="/Quiz">Quiz</a>
+          
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+        
+    </body>
+</html>
