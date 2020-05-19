@@ -12,12 +12,13 @@ def login():
     if form.validate_on_submit():
         flash('Login requested for user {}, remember_me={}'.format(
             form.username.data, form.remember_me.data))
-        return redirect('/index')
+        return redirect('/Quiz')
+
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/index')
 def index():
-    
+
     user = {'username': 'Godfrey Nyirenda'}
     posts = [
         {
@@ -25,7 +26,7 @@ def index():
             'body': 'Beautiful day in Portland!'
         },
         {
-            'author': {'username': 'Susan'},
+            'author': {'username': 'Susan'}
             'body': 'The Avengers movie was so cool!'
         }
     ]
