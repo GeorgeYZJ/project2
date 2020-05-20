@@ -8,10 +8,7 @@ from app import login
 def load_user(id):
     return User.query.get(int(id))
 
-followers = db.Table('followers',
-    db.Column('follower_id', db.Integer, db.ForeignKey('answer.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-)
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,11 +18,6 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     answer = db.relationship('Answer', backref='attemp', lazy='dynamic')
 
-    followed = db.relationship(
-        'User', secondary=followers,
-        primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -34,11 +26,7 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    def followed_posts(self):
-        return Post.query.join(
-            followers, (followers.c.followed_id == Post.user_id)).filter(
-                followers.c.follower_id == self.id).order_by(
-                    Post.timestamp.desc())
+    
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
