@@ -31,4 +31,7 @@ class PostForm(FlaskForm):
     question = StringField('Question', validators=[DataRequired()])
     post = TextAreaField('Answer Here', validators=[
         DataRequired()])
+    attemp = TextAreaField('Answer Here', validators=[
+        DataRequired()])
     submit = SubmitField('Submit')
+

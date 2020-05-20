@@ -50,8 +50,16 @@ def index():
 
 @app.route('/Quiz', methods=['GET', 'POST'])
 def Quiz():
-    #return redirect('/Quiz')
-    return render_template('Quiz.html', title='Quiz')
+    form = PostForm()
+    posts = Post.query.all()
+    user = current_user.username
+    for p in posts:
+        if form.validate_on_submit():
+            attemp = Answer(answer = form.post.data, feedback=p.id, user_id = current_user.id)
+            db.session.add(attemp)
+            db.session.commit()
+    
+    return render_template('Quiz.html', title='QuizPage', posts=posts, form = form)
     
 @app.route('/register', methods=['GET', 'POST'])
 def register():

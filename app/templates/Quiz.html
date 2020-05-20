@@ -9,6 +9,7 @@
 
     <div class="page-header">
         <h1> Lets see how well you know EPL</h1>
+
       </div>
         <div class="row">
           <div class="col-lg-12">
@@ -32,6 +33,28 @@
           </div>
         </div>
       </div>
+
+
+
+
+      {% for post in posts %}
+      <p>
+      {{ post.author.username }} propose question No. {{post.id}}: <b>{{ post.question }}</b> 
+      </p>
+      <p>
+          {{ form.post.label }}<br>
+          {{ form.question(cols=36, rows=4) }}<br>
+          {% for error in form.post.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+      </p>
+      
+      <p>{{ form.submit() }}</p>
+      {% endfor %}
+  
+  
+    
+
 
     <!-- <h1>How much you know about EPL</h1>
     <p>
