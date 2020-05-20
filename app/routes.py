@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for,request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm,PostForm
 from flask_login import current_user, login_user
-from app.models import User
+from app.models import User, Post
 from flask_login import logout_user, login_required
 from werkzeug.urls import url_parse
 
@@ -33,23 +33,20 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-
-    user = {'username': 'Godfrey Nyirenda'}
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    form = PostForm()
+    user = current_user.username
+    if form.validate_on_submit():
+        post = Post(question=form.question.data, body= form.post.data,  author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+    posts = posts = current_user.followed_posts().all()
+    return render_template('index.html', title='Home', user=user, posts=posts, form = form)
 
 @app.route('/Quiz', methods=['GET', 'POST'])
 def Quiz():
