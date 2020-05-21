@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for,request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm,PostForm
+from app.forms import LoginForm, RegistrationForm,PostForm, AnswerForm
 from flask_login import current_user, login_user
-from app.models import User, Post
+from app.models import User, Post,Answer
 from flask_login import logout_user, login_required
 from werkzeug.urls import url_parse
 
@@ -50,16 +50,16 @@ def index():
 
 @app.route('/Quiz', methods=['GET', 'POST'])
 def Quiz():
-    form = PostForm()
+    form = AnswerForm()
     posts = Post.query.all()
     user = current_user.username
-    for p in posts:
-        if form.validate_on_submit():
-            attemp = Answer(answer = form.post.data, feedback=p.id, user_id = current_user.id)
-            db.session.add(attemp)
-            db.session.commit()
-    
-    return render_template('Quiz.html', title='QuizPage', posts=posts, form = form)
+    if form.validate_on_submit():
+         attemp = Answer(answer = form.trying.data, feedback=form.question_id.data, attemp = current_user.username)
+         db.session.add(attemp)
+         db.session.commit()
+         flash('Your answer is now submmited!')
+            
+    return render_template('Quiz.html', title='QuizPage', posts=posts, form = form, user=user)
     
 @app.route('/register', methods=['GET', 'POST'])
 def register():

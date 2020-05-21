@@ -16,7 +16,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
-    answer = db.relationship('Answer', backref='attemp', lazy='dynamic')
+    answers = db.relationship('Answer', backref='attemp', lazy='dynamic')
 
 
     def __repr__(self):
@@ -34,7 +34,7 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    attemp = db.relationship('Answer', backref='feedback', lazy='dynamic')
+    attemps = db.relationship('Answer', backref='feedback', lazy='dynamic')
     def __repr__(self):
         return '<Post {}>'.format(self.question)
 
@@ -43,6 +43,8 @@ class Answer(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     answer = db.Column(db.String(720))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    def __repr__(self):
+        return '<Answer {}>'.format(self.answer)
     
 
     

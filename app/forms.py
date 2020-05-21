@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -29,9 +29,13 @@ class RegistrationForm(FlaskForm):
 
 class PostForm(FlaskForm):
     question = StringField('Question', validators=[DataRequired()])
-    post = TextAreaField('Answer Here', validators=[
-        DataRequired()])
-    attemp = TextAreaField('Answer Here', validators=[
+    post = TextAreaField('Input Answer Here', validators=[
         DataRequired()])
     submit = SubmitField('Submit')
 
+class AnswerForm(FlaskForm):
+    question_id = TextAreaField('Please copy the question you want to answer here', validators=[
+        DataRequired()])
+    trying = TextAreaField('Answer Here', validators=[
+        DataRequired()])
+    submit = SubmitField('Submit')
