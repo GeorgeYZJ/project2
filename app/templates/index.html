@@ -2,7 +2,35 @@
 
 {% block content %}
 
-    <h> Welcome to Barclays EPL knowledge base quiz </h>
+    <h1> Hi, {{current_user.username}} Welcome to Barclays EPL knowledge base quiz </h1>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.question.label }}<br>
+            {{ form.question(cols=36, rows=4) }}<br>
+            {% for error in form.post.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.post.label }}<br>
+            {{ form.post(cols=32, rows=4) }}<br>
+            {% for error in form.post.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+
+
+    </form>
+
+    {% for post in posts %}
+    <p>
+    {{ post.author.username }} propose question: <b>{{post.question}}</b> The answer is <b>{{post.body}}</b>
+    </p>
+    {% endfor %}
+
     <p>
         To start test click on the next button to register
         <br>

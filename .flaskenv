@@ -1,0 +1,1 @@
+$env:FLASK_APP = "Barclays_EPL.py"
