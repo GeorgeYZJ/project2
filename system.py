@@ -33,8 +33,15 @@ class SystemlTest(unittest.TestCase):
     def test_login(self):
         self.driver.get('http://localhost:5000/')
         time.sleep(1)
-        u = User.query.get(1)
-        u.set_password('pw')
+        user_field = self.driver(find_element_by_id('username'))
+        password_field = self.driver(find_element_by_id('password'))
+        submit = self.driver.find_element_by_id('submit')
+
+        user_field.send_keys('George')
+        Password_field.send_keys('pw')
+        submit.click()
+        time.sleep(1)
+
         self.assertFlase(u.check_password('password'))
         self.assertTrue(u.check.password('pw'))
 
