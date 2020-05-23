@@ -41,19 +41,29 @@
 
       <p>Hi {{current_user.username}} <br></p>
 
+
+      {% for message in get_flashed_messages() %}
+      <div class="alert alert-warning">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
+      </div>
+      {% endfor %}
+
+
       <div align="center">
 
-        
         {% for post in posts %}
       <p>
         Question No. {{post.id}}: <b>{{ post.question }}</b> 
       </p>
-
-      
         {% endfor %}
-    
-        
-
+        <form action="#" method="post">
+          <p>Question: copy the question you want to answer here</p>
+          <p><input type="text" name="question" placeholder="Question you want to answer"/></p>
+          <p>Answer:</p>
+          <p><input type="text" name="answer" placeholder="put your answer here"/></p>
+          <p><input type="submit" value="submit" /></p>
+        </form>
       </div>
       
 

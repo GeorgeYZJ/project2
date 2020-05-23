@@ -50,16 +50,21 @@ def index():
 
 @app.route('/Quiz', methods=['GET', 'POST'])
 def Quiz():
-    form = AnswerForm()
     posts = Post.query.all()
     user = current_user.username
-    if form.validate_on_submit():
-         attemp = Answer(answer = form.trying.data, feedback=form.question_id.data, attemp = current_user.username)
-         db.session.add(attemp)
-         db.session.commit()
-         flash('Your answer is now submmited!')
+    if request.method == "POST":
+        ques = request.form.get("question")
+        ans = request.form.get("answer")
+        attemp = Answer(answer = ans, feedback=Post.query.filter(Post.question == ques).first(), attemp = current_user)
+        db.session.add(attemp)
+        db.session.commit()
+        post = Post.query.filter(Post.question == ques).first()
+        if (post.body == ans.lower()):
+            flash('Your answer is correct!')
+        else:
+            flash("Your answer is not correct!")
             
-    return render_template('Quiz.html', title='QuizPage', posts=posts, form = form, user=user)
+    return render_template('Quiz.html', title='QuizPage', posts=posts, user=user)
     
 @app.route('/register', methods=['GET', 'POST'])
 def register():
