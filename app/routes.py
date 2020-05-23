@@ -48,8 +48,15 @@ def index():
     posts = current_user.posts.all()
     return render_template('index.html', title='Home', user=user, posts=posts, form = form)
 
+ur = current_user
+
 @app.route('/Quiz', methods=['GET', 'POST'])
-def Quiz():
+def url():
+    uu = current_user.username
+    return redirect(url_for("Quiz", name= uu ))
+
+@app.route('/Quiz/<name>', methods=['GET', 'POST'])
+def Quiz(name):
     posts =  Post.query.all()
     q = [post.question for post in Post.query.all()]
     user = current_user.username
